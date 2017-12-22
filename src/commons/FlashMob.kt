@@ -2,6 +2,7 @@ package commons
 
 import java.io.Serializable
 import java.time.LocalTime
+import java.util.*
 
 
 /*
@@ -10,7 +11,7 @@ import java.time.LocalTime
  *  Date: 22/12/17
  */
 
-data class FlashMob (var name: String, var imagePath: String, var start: LocalTime, var end: LocalTime,
+data class FlashMob (var name: String, var imagePath: String, var date: Date, var start: LocalTime, var end: LocalTime,
                      var description: String=""): Serializable, Comparable<FlashMob> {
 
     override fun compareTo(other: FlashMob): Int {

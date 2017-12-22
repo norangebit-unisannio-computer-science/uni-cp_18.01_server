@@ -5,6 +5,7 @@ import commons.FlashMobException
 import server.backend.Registry
 import java.io.IOException
 import java.time.LocalTime
+import java.util.*
 
 
 /*
@@ -18,17 +19,17 @@ fun main(args: Array<String>){
     println("print size ${rg.size()}")
 
     println("add titolo 1")
-    rg.add(FlashMob("titolo 1", "path 1", LocalTime.of(21, 30), LocalTime.of(22, 0)))
+    rg.add(FlashMob("titolo 1", "path 1", Date(), LocalTime.of(21, 30), LocalTime.of(22, 0)))
 
     println("add titolo 1")
     try {
-        rg.add(FlashMob("titolo 1", "path 1", LocalTime.of(21, 30), LocalTime.of(22, 0)))
+        rg.add(FlashMob("titolo 1", "path 1", Date(), LocalTime.of(21, 30), LocalTime.of(22, 0)))
     }catch (e: FlashMobException){ println("${e.code}: ${e.message}") }
 
     println("update titolo 2")
-    rg.update(FlashMob("titolo 2", "path 2", LocalTime.of(21, 30), LocalTime.of(22, 0)))
+    rg.update(FlashMob("titolo 2", "path 2", Date(), LocalTime.of(21, 30), LocalTime.of(22, 0)))
     println("update titolo 3")
-    rg.update(FlashMob("titolo 3", "path 3", LocalTime.of(21, 30), LocalTime.of(22, 0)))
+    rg.update(FlashMob("titolo 3", "path 3", Date(), LocalTime.of(21, 30), LocalTime.of(22, 0)))
 
 
     rg.list().forEach { print(it+" - ") }

@@ -1,5 +1,6 @@
 package server.backend
 
+import commons.Code
 import commons.FlashMob
 import commons.FlashMobException
 import java.io.*
@@ -20,13 +21,13 @@ class Registry{
         if(dict.containsKey(name))
             return dict[name] as FlashMob
         else
-            throw FlashMobException(FlashMobException.Code.NOT_FOUND)
+            throw FlashMobException(Code.NOT_FOUND)
     }
 
     @Throws(FlashMobException::class)
     fun add(fm: FlashMob){
         if (dict.containsKey(fm.name))
-            throw FlashMobException(FlashMobException.Code.CONFLICT)
+            throw FlashMobException(Code.CONFLICT)
         else
             dict[fm.name]=fm
     }
@@ -36,7 +37,7 @@ class Registry{
         if(dict.containsKey(name))
             dict.remove(name)
         else
-            throw FlashMobException(FlashMobException.Code.NOT_FOUND)
+            throw FlashMobException(Code.NOT_FOUND)
     }
 
     fun update(fm: FlashMob){

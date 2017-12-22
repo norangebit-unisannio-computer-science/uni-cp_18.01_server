@@ -19,15 +19,15 @@ class FlashMobException(val code: Int): Exception() {
             else -> "generic error"
         }
     }
+}
 
-    object Code{
-        val GET_OK = 200
-        val POST_OK = 201
-        val PUT_OK = 202
-        val DELETE_OK = 204
-        val BAD_REQUEST = 400
-        val UNAUTHORIZED = 401
-        val NOT_FOUND = 404
-        val CONFLICT = 409
-    }
+object Code{
+    val GET_OK = 200
+    val POST_OK = 201
+    val PUT_OK = 202
+    val DELETE_OK = 204
+    val BAD_REQUEST = 400
+    val UNAUTHORIZED = 401
+    val NOT_FOUND = 404
+    val CONFLICT = 409
 }
