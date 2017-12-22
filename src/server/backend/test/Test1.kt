@@ -44,12 +44,12 @@ fun main(args: Array<String>){
     }catch (e: FlashMobException){ println("${e.code}: ${e.message}") }
 
     println("save")
-    rg.save("storage/backend/save.dat")
+    rg.save("storage/backend/save.dat0")
 
     val rg2 = Registry()
 
     println("print rg2 size ${rg2.size()}")
-    try{ rg2.load("storage/backend/save.dat") }catch (e: IOException){ e.printStackTrace() }
+    try{ rg2.load("storage/backend/save.dat0") }catch (e: IOException){ e.printStackTrace() }
 
     println("load rg1 into rg2\nprint size ${rg2.size()}")
 
