@@ -21,31 +21,24 @@ fun main(args: Array<String>){
 
     println("add titolo 5")
     try {
-        instance.add(FlashMob("titolo 5", "path 5", Date(), LocalTime.of(21, 30), LocalTime.of(22, 0)))
+        instance.add(FlashMob("titolo 5", "path 5", Date(), Date()))
     }catch (e: FlashMobException){ println("${e.code}: ${e.message}") }
 
     println("add titolo 5")
     try {
-        instance.add(FlashMob("titolo 5", "path 5", Date(), LocalTime.of(21, 30), LocalTime.of(22, 0)))
+        instance.add(FlashMob("titolo 5", "path 5", Date(), Date()))
     }catch (e: FlashMobException){ println("${e.code}: ${e.message}") }
 
     println("commit")
     instance.commit()
 
     println("update titolo 6")
-    instance.update(FlashMob("titolo 6", "path 6", Date(), LocalTime.of(21, 30), LocalTime.of(22, 0)))
+    instance.update(FlashMob("titolo 5", "path 5", Date(), Date()))
     instance.list().forEach { print(it+" - ") }
 
     println("\nrestore")
     instance.restore()
     println("size ${instance.size()}")
     instance.list().forEach { print(it+" - ") }
-
-    println("\n"+instance.get("titolo 5").imagePath)
-
-    println("remove 5")
-    instance.remove("titolo 5")
-    instance.list().forEach { print(it+" - ") }
-
 
 }

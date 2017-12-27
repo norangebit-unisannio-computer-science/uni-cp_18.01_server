@@ -24,11 +24,20 @@ object instance{
 
     @Synchronized fun get(name: String) = rg.get(name)
 
-    @Synchronized fun add(fm: FlashMob) = rg.add(fm)
+    @Synchronized fun add(fm: FlashMob){
+        rg.add(fm)
+        commit()
+    }
 
-    @Synchronized fun update(fm: FlashMob) = rg.update(fm)
+    @Synchronized fun update(fm: FlashMob){
+        rg.update(fm)
+        commit()
+    }
 
-    @Synchronized fun remove(name: String) = rg.remove(name)
+    @Synchronized fun remove(name: String){
+        rg.remove(name)
+        commit()
+    }
 
     @Synchronized fun list() = rg.list()
 

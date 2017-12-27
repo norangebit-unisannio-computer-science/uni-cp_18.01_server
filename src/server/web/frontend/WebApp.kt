@@ -19,6 +19,7 @@ import org.restlet.security.Role
 import org.restlet.security.User
 import server.backend.wrapper.instance
 import server.web.frontend.Role.SU
+import server.web.frontend.Role.UNAUTHENTICATED
 import server.web.frontend.Role.USER
 import server.web.resource.*
 
@@ -48,6 +49,7 @@ class WebApp : Application() {
         router.attach("/list", ListJSON::class.java)
         router.attach("/{name}", editGuard)
         router.attach("/{name}/photo/{id}", uploadGuard)
+        router.attach("/{name}/photos", Photos::class.java)
 
         return router
     }
@@ -78,6 +80,9 @@ class WebApp : Application() {
             realm.users.add(it)
             realm.map(it, Role.get(this, USER))
         }
+        val user = User("debug", "debug".toCharArray())
+        realm.users.add(user)
+        realm.map(user, Role.get(this, UNAUTHENTICATED))
 
         guard.verifier = realm.verifier
         guard.enroler = realm.enroler
