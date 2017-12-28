@@ -31,18 +31,18 @@ class FlashMobJSON: ServerResource(){
 
     @Post
     fun post(payload: String){
-        if (!isInRole(Role.SU)) {
-            throw ResourceException(Status.CLIENT_ERROR_FORBIDDEN)
-        }
+      //  if (!isInRole(Role.SU)) {
+      //      throw ResourceException(Status.CLIENT_ERROR_FORBIDDEN)
+      //  }
         instance.update(gson.fromJson(payload, FlashMob::class.java))
         status = Status(Code.POST_OK)
     }
 
     @Put
     fun put(payload: String){
-        if (!isInRole(Role.SU)) {
-            throw ResourceException(Status.CLIENT_ERROR_FORBIDDEN)
-        }
+      //  if (!isInRole(Role.SU)) {
+      //      throw ResourceException(Status.CLIENT_ERROR_FORBIDDEN)
+      //  }
         try {
             instance.add(gson.fromJson(payload, FlashMob::class.java))
             status = Status(Code.PUT_OK)

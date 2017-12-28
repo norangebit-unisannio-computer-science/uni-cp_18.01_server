@@ -26,7 +26,8 @@ class Photo: ServerResource(){
     @Get
     fun getPhoto(): FileRepresentation?{
         try {
-            val payload = FileRepresentation(File(System.getProperty("user.dir") + "/storage/content/" + fileName()),
+            val payload = FileRepresentation(File(System.getProperty("user.dir") + "/storage/content/" +
+                    "${getAttribute("name").replace("%20", " ")}/${getAttribute("id")}.jpg"),
                     MediaType.IMAGE_ALL)
             return payload
         }catch (e: IOException){
@@ -39,16 +40,18 @@ class Photo: ServerResource(){
     @Post
     @Throws(ResourceException::class)
     fun upload(entity: Representation){
-        if (isInRole(Role.UNAUTHENTICATED)) {
-            throw ResourceException(Status.CLIENT_ERROR_FORBIDDEN)
-        }
+        //if (isInRole(Role.UNAUTHENTICATED)) {
+        //    throw ResourceException(Status.CLIENT_ERROR_FORBIDDEN)
+        //}
         try {
-            entity.write(FileOutputStream(System.getProperty("user.dir") + "/storage/content/" + fileName()))
+            val f = File(System.getProperty("user.dir")+"/storage/content/"
+                    +getAttribute("name").replace("%20", " "))
+            f.mkdir()
+            entity.write(FileOutputStream(f.absolutePath +"/"+getAttribute("id")+".jpg"))
         } catch (e: Exception) {
             throw ResourceException(e)
         }
         status = Status(Code.POST_OK)
     }
 
-    fun fileName() = "${getAttribute("name")}_${getAttribute("id")}.jpg".replace("%20", " ")
 }

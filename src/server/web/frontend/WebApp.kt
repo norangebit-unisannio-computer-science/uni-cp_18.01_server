@@ -47,8 +47,8 @@ class WebApp : Application() {
 
         router.attach("/size", SizeJSON::class.java)
         router.attach("/list", ListJSON::class.java)
-        router.attach("/{name}", editGuard)
-        router.attach("/{name}/photo/{id}", uploadGuard)
+        router.attach("/{name}", FlashMobJSON::class.java)
+        router.attach("/{name}/photo/{id}", Photo::class.java)
         router.attach("/{name}/photos", Photos::class.java)
 
         return router
