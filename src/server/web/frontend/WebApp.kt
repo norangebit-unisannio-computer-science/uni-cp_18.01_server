@@ -11,15 +11,13 @@ import org.restlet.Application
 import org.restlet.Component
 import org.restlet.Restlet
 import org.restlet.data.ChallengeScheme
+import org.restlet.data.Method
 import org.restlet.data.Protocol
 import org.restlet.routing.Router
-import org.restlet.security.ChallengeAuthenticator
-import org.restlet.security.MemoryRealm
+import org.restlet.security.*
 import org.restlet.security.Role
-import org.restlet.security.User
 import server.backend.wrapper.instance
 import server.web.frontend.Role.SU
-import server.web.frontend.Role.UNAUTHENTICATED
 import server.web.frontend.Role.USER
 import server.web.resource.*
 
@@ -29,7 +27,6 @@ import java.util.Arrays
 import java.util.Scanner
 
 object Role{
-    val UNAUTHENTICATED = "unauthenticated"
     val USER = "authenticatated"
     val SU = "super user"
 }
@@ -39,16 +36,21 @@ class WebApp : Application() {
     override fun createInboundRoot(): Restlet {
         val router = Router()
 
-        val editGuard = createAuthenticator()
-        editGuard.setNext(FlashMobJSON::class.java)
-
+        val uploadProtectMethod = authorizeMethod(Method.GET)
+        uploadProtectMethod.setNext(Photo::class.java)
         val uploadGuard = createAuthenticator()
-        uploadGuard.setNext(Photo::class.java)
+        uploadGuard.next = uploadProtectMethod
+
+        val editProtectMethod = authorizeMethod(Method.GET)
+        editProtectMethod.setNext(FlashMobJSON::class.java)
+        val editGuard = createAuthenticator()
+        editGuard.next = editProtectMethod
+
 
         router.attach("/size", SizeJSON::class.java)
         router.attach("/list", ListJSON::class.java)
-        router.attach("/{name}", FlashMobJSON::class.java)
-        router.attach("/{name}/photo/{id}", Photo::class.java)
+        router.attach("/{name}", editGuard)
+        router.attach("/{name}/photo/{id}", uploadGuard)
         router.attach("/{name}/photos", Photos::class.java)
 
         return router
@@ -59,6 +61,7 @@ class WebApp : Application() {
 
         val realm = MemoryRealm()
 
+        //admin users
         var sudoers: Array<User>? = null
         try {
             val sc = Scanner(File("sudoers.json"))
@@ -70,6 +73,7 @@ class WebApp : Application() {
             realm.map(it, Role.get(this, SU))
         }
 
+        //normal users
         var users: Array<User>? = null
         try {
             val sc = Scanner(File("users.json"))
@@ -80,14 +84,32 @@ class WebApp : Application() {
             realm.users.add(it)
             realm.map(it, Role.get(this, USER))
         }
+
         val user = User("debug", "debug".toCharArray())
         realm.users.add(user)
-        realm.map(user, Role.get(this, UNAUTHENTICATED))
+        realm.map(user, Role.get(this, USER))
 
         guard.verifier = realm.verifier
         guard.enroler = realm.enroler
+        guard.isOptional = true
 
         return guard
+    }
+
+    fun authorizeRole(vararg role: String): RoleAuthorizer{
+        val roleAuth = RoleAuthorizer()
+        role.forEach { roleAuth.authorizedRoles.add(Role.get(this, it)) }
+        return roleAuth
+    }
+
+    fun authorizeMethod(vararg method: Method): MethodAuthorizer{
+        val methodAuth = MethodAuthorizer()
+        method.forEach { methodAuth.anonymousMethods.add(it) }
+        methodAuth.authenticatedMethods.add(Method.GET)
+        methodAuth.authenticatedMethods.add(Method.POST)
+        methodAuth.authenticatedMethods.add(Method.PUT)
+        methodAuth.authenticatedMethods.add(Method.DELETE)
+        return methodAuth
     }
 
     private class Settings (var port: Int = 8182, var storage_base_dir: String = "storage/backend",
