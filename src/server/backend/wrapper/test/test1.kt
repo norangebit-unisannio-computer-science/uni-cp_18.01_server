@@ -21,19 +21,19 @@ fun main(args: Array<String>){
 
     println("add titolo 5")
     try {
-        instance.add(FlashMob("titolo 5", "path 5", Date(), Date()))
+        instance.add(FlashMob("titolo 5", Date(), Date()))
     }catch (e: FlashMobException){ println("${e.code}: ${e.message}") }
 
     println("add titolo 5")
     try {
-        instance.add(FlashMob("titolo 5", "path 5", Date(), Date()))
+        instance.add(FlashMob("titolo 5", Date(), Date()))
     }catch (e: FlashMobException){ println("${e.code}: ${e.message}") }
 
     println("commit")
     instance.commit()
 
     println("update titolo 6")
-    instance.update(FlashMob("titolo 5", "path 5", Date(), Date()))
+    instance.update(FlashMob("titolo 6", Date(), Date()))
     instance.list().forEach { print(it+" - ") }
 
     println("\nrestore")
