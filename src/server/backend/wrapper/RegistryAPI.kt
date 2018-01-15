@@ -2,7 +2,6 @@ package server.backend.wrapper
 
 import commons.FlashMob
 import server.backend.Registry
-import com.sun.xml.internal.bind.v2.schemagen.Util.equalsIgnoreCase
 import java.io.File
 import java.io.IOException
 

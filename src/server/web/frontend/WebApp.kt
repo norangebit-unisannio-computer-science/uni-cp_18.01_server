@@ -46,7 +46,10 @@ class WebApp : Application() {
         val editGuard = createAuthenticator()
         editGuard.next = editProtectMethod
 
+        val loginGuard = createAuthenticator(false)
+        loginGuard.setNext(Users::class.java)
 
+        router.attach("/users", loginGuard)
         router.attach("/size", SizeJSON::class.java)
         router.attach("/list", ListJSON::class.java)
         router.attach("/{name}", editGuard)
@@ -56,7 +59,7 @@ class WebApp : Application() {
         return router
     }
 
-    private fun createAuthenticator(): ChallengeAuthenticator {
+    private fun createAuthenticator(optional: Boolean = true): ChallengeAuthenticator {
         val guard = ChallengeAuthenticator(context, ChallengeScheme.HTTP_BASIC, "Realm")
 
         val realm = MemoryRealm()
@@ -91,7 +94,7 @@ class WebApp : Application() {
 
         guard.verifier = realm.verifier
         guard.enroler = realm.enroler
-        guard.isOptional = true
+        guard.isOptional = optional
 
         return guard
     }
@@ -125,7 +128,9 @@ class WebApp : Application() {
                 val sc = Scanner(File("settings.json"))
                 settings = gson.fromJson(sc.nextLine(), Settings::class.java)
                 sc.close()
-            } catch (e: FileNotFoundException) { }
+            } catch (e: FileNotFoundException) {
+                System.err.println("Usate impostazioni di default")
+            }
 
             instance.setStorage(System.getProperty("user.dir") + "/" + settings.storage_base_dir,
                     settings.storage_base_file)
