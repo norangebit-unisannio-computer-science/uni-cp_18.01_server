@@ -8,6 +8,9 @@ import org.restlet.data.Status
 import org.restlet.resource.*
 import server.backend.wrapper.instance
 import server.web.frontend.Role
+import com.google.gson.GsonBuilder
+
+
 
 
 /*
@@ -58,4 +61,4 @@ class FlashMobJSON: ServerResource(){
     }
 }
 
-val gson = Gson()
+val gson = GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm").create()
