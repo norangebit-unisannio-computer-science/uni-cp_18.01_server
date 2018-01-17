@@ -34,7 +34,6 @@ class Photo: ServerResource(){
             status = Status(Code.NOT_FOUND)
             return null
         }
-        //TODO fix this
     }
 
     @Post

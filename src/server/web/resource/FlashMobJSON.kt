@@ -28,7 +28,7 @@ class FlashMobJSON: ServerResource(){
                     FlashMob::class.java)
         }catch (e: FlashMobException){
             status = Status(e.code, e.message)
-            return null
+            return gson.toJson(e, FlashMobException::class.java)
         }
     }
 
