@@ -88,10 +88,6 @@ class WebApp : Application() {
             realm.map(it, Role.get(this, USER))
         }
 
-        val user = User("debug", "debug".toCharArray())
-        realm.users.add(user)
-        realm.map(user, Role.get(this, USER))
-
         guard.verifier = realm.verifier
         guard.enroler = realm.enroler
         guard.isOptional = optional
